@@ -1,7 +1,21 @@
-// import {analytics} from "../modules/analytics.js";
+import express, { Application, Request, Response, NextFunction } from 'express';
+import cors from 'cors';
+import userController from './controllers/User.controller.ts';
 
-const message = 'Hello Node';
+// require('dotenv').config();
 
-console.log(message);
+const port = 8080;
+const hostname = '127.0.0.1';
 
-// analytics('index.ts')
+export const app: Application = express();
+app.use(cors());
+
+app.use(express.json());
+
+app.post('/users', async (req: Request, res: Response, next: NextFunction) => {
+    await userController({ email: req.body.email, user: req.body.user });
+});
+
+app.listen(port, hostname, () => {
+    console.log('Server is running on port 8080');
+});
